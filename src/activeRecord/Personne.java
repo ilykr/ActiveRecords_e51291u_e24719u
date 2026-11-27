@@ -1,5 +1,9 @@
 package activeRecord;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class Personne {
@@ -8,7 +12,7 @@ public class Personne {
     private String nom;
     private String prenom;
 
-    public  Personne(String nom, String prenom) {
+    public Personne(String nom, String prenom) {
         this.id = -1;
         this.nom = nom;
         this.prenom = prenom;
@@ -42,8 +46,23 @@ public class Personne {
         return null;
     }
 
-    public static ArrayList<Personne> findAll(){
-        return null;
+    public static ArrayList<Personne> findAll() throws SQLException {
+        ArrayList<Personne> personnes = new ArrayList<>();
+        Connection conn = DBConnection.getConnection();
+        String query = "SELECT * FROM Personne";
+        PreparedStatement ps = conn.prepareStatement(query);
+        ps.execute();
+        ResultSet res = ps.getResultSet();
+        // s'il y a un resultat
+        while (res.next()) {
+            String nom = res.getString("nom");
+            String prenom = res.getString("prenom");
+            int id = res.getInt("id");
+            Personne p = new Personne(nom, prenom);
+            p.id = id;
+            personnes.add(p);
+        }
+        return personnes;
     }
 
     public static void createTable(){

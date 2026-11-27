@@ -4,7 +4,8 @@ out/
 !**/src/test/**/out/
 .kotlin
 .idea
-TP8.iml
+ActiveRecords_e51291u_e24719u.iml
+
 
 ### Eclipse ###
 .apt_generated

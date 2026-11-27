@@ -29,8 +29,6 @@ public class DBConnection {
 
     }
 
-
-
     public static synchronized Connection getConnection() throws SQLException {
         if (instance == null) {
             new DBConnection();
