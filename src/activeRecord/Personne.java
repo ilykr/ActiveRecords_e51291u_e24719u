@@ -38,12 +38,40 @@ public class Personne {
 
     }
 
-    public static Personne findById(int id){
-        return null;
+    public static Personne findById(int id) throws SQLException {
+        Connection connect = DBConnection.getConnection();
+        String createString = "SELECT * FROM Personne WHERE ID = ?;";
+        PreparedStatement prep;
+        prep = connect.prepareStatement(createString);
+        prep.setInt(1, id);
+        prep.execute();
+        ResultSet rs = prep.getResultSet();
+        if (rs==null){
+            return null;
+        }
+        Personne p=new Personne(rs.getString("nom"), rs.getString("prenom"));
+        p.id=id;
+        return p;
     }
 
-    public static ArrayList<Personne> findByName(String name){
-        return null;
+    public static ArrayList<Personne> findByName(String name) throws SQLException {
+        ArrayList<Personne> list;
+        Connection connect = DBConnection.getConnection();
+        String createString = "SELECT * FROM Personne WHERE NOM = ?;";
+        PreparedStatement prep;
+        prep = connect.prepareStatement(createString);
+        prep.setString(1, name);
+        prep.execute();
+        ResultSet rs = prep.getResultSet();
+        if (rs==null){
+            list= null;
+        }else{
+            list = new ArrayList<>();
+            while (rs.next()){
+                list.add(new Personne(rs.getString("nom"), rs.getString("prenom")));
+            }
+        }
+        return list;
     }
 
     public static ArrayList<Personne> findAll() throws SQLException {
